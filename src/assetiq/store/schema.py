@@ -63,6 +63,10 @@ class Well(Base):
     lon: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
     installed_on: Mapped[Optional[str]] = mapped_column(String(32), nullable=True)
     recorded_status: Mapped[Optional[str]] = mapped_column(String(32), nullable=True)
+    status: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    decommissioned_on: Mapped[Optional[str]] = mapped_column(String(32), nullable=True)
+    type_history_json: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
+    team_history_json: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
     last_inspection_id: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
     last_inspected_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
     equipment_json: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
@@ -85,6 +89,7 @@ class Inspection(Base):
     spill_est_volume_bbl: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
     evidence_images_json: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
     notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    recorded_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
     dataset_tag: Mapped[str] = mapped_column(String(32), default="sample", index=True)
 
     __table_args__ = (Index("ix_insp_asset_time", "asset_id", "inspected_at"),)
@@ -108,6 +113,8 @@ class Maintenance(Base):
     cost_total: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
     triggered_by_inspection_id: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
     report_file: Mapped[Optional[str]] = mapped_column(String(256), nullable=True)
+    recorded_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    cost_revision_json: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
     dataset_tag: Mapped[str] = mapped_column(String(32), default="sample", index=True)
 
 
@@ -136,6 +143,9 @@ class ContextNote(Base):
     note_type: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
     inspection_id: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
     text: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    field_name: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    original_value: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    corrected_value: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     valid_from: Mapped[Optional[str]] = mapped_column(String(32), nullable=True)
     valid_to: Mapped[Optional[str]] = mapped_column(String(32), nullable=True)
     dataset_tag: Mapped[str] = mapped_column(String(32), default="sample", index=True)

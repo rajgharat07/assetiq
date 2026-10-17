@@ -362,6 +362,14 @@ class Copilot:
         if "produced the most oil" in ql or ("most oil" in ql and "2026" in ql):
             return self._q_final_best_oil(q, user_id)
 
+        # Q9d H2S reading — before generic gas OPS-1
+        if score("h2s reading", "h2s") and re.search(r"WELL-\d{4}", q, re.I):
+            return self._q_final_h2s(q, user_id)
+        if score("gas smell", "gas odor") and score("what was", "reading", "ppm") and re.search(
+            r"WELL-\d{4}", q, re.I
+        ):
+            return self._q_final_h2s(q, user_id)
+
         # Q3 gas OPS-1
         if score("gas") and score("operator note", "operating procedure", "ops-1", "deadline", "response met"):
             return self._q_final_gas(q, user_id)
@@ -413,8 +421,6 @@ class Copilot:
             return self._q_final_nw_lead(q, user_id)
         if score("cold weather", "heat trace", "freeze protection") and score("sop", "missed", "december"):
             return self._q_final_cold_weather(q, user_id)
-        if score("h2s reading", "h2s") and re.search(r"WELL-\d{4}", q, re.I):
-            return self._q_final_h2s(q, user_id)
         if score("wells we've talked about", "deal with first", "of all the wells"):
             return self._q_final_session_priority(q, user_id)
 
@@ -612,7 +618,7 @@ class Copilot:
         ]
         nc = len(res["noncompliant"])
         summary = (
-            f"Regulator letter covers {res['count']} reportable (≥5 bbl) spills in Northeast Blocks 7–8 "
+            f"Regulator letter covers {res['count']} reportable (>=5 bbl) spills in Northeast Blocks 7-8 "
             f"since 1 Jun 2026 (not-crude corrections excluded). {nc} not compliant "
             f"(need clean-up report sentence 'Soil samples sent to the lab.')."
         )

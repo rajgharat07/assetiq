@@ -50,6 +50,56 @@ SEED_RULES: tuple[Rule, ...] = (
         "Producing when wellhead - ambient >= 20 C",
     ),
     Rule(
+        "T500_PRODUCING_DELTA",
+        25.0,
+        "C",
+        "gte",
+        "fleet/well-types/T500.md",
+        "3",
+        "T500",
+        "Producing when wellhead - ambient >= 25 C",
+    ),
+    Rule(
+        "T500_WH_ALARM",
+        95.0,
+        "C",
+        "lte",
+        "fleet/well-types/T500.md",
+        "4",
+        "T500",
+        "Wellhead must stay at or below 95 C",
+    ),
+    Rule(
+        "OPS1_GAS_RESPONSE_HOURS_PRE_2027",
+        24.0,
+        "hours",
+        "lte",
+        "fleet/sops/operations-sop-rev2.md",
+        "OPS-1",
+        None,
+        "Gas odor field response within 24h for reports before 1 Jan 2027",
+    ),
+    Rule(
+        "OPS1_GAS_RESPONSE_HOURS_FROM_2027",
+        12.0,
+        "hours",
+        "lte",
+        "fleet/sops/operations-sop-rev2.md",
+        "OPS-1",
+        None,
+        "Gas odor field response within 12h for reports from 1 Jan 2027",
+    ),
+    Rule(
+        "OPS5_FREEZE_AMBIENT_C",
+        -5.0,
+        "C",
+        "lte",
+        "fleet/sops/operations-sop-rev2.md",
+        "OPS-5",
+        None,
+        "Ambient at or below -5 C on producing well needs heat-trace check within 7 days",
+    ),
+    Rule(
         "T200_WH_ALARM",
         85.0,
         "C",
@@ -194,8 +244,12 @@ class RuleRegistry:
         return self._by_id[rule_id]
 
     def producing_rule(self, well_type: str) -> Rule:
-        key = "T200_PRODUCING_DELTA" if well_type.upper() == "T200" else "T350_PRODUCING_DELTA"
-        return self.get(key)
+        wt = (well_type or "T200").upper()
+        if wt == "T500":
+            return self.get("T500_PRODUCING_DELTA")
+        if wt == "T350":
+            return self.get("T350_PRODUCING_DELTA")
+        return self.get("T200_PRODUCING_DELTA")
 
     def list_rules(self) -> list[Rule]:
         return list(self._by_id.values())

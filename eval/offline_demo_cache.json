@@ -1,0 +1,27 @@
+{
+  "_note": "Cached deterministic answers for projector demo if Wi-Fi/Ollama flaps. Regenerated from live runs — not fabricated.",
+  "challenge_date": "2026-10-17",
+  "samples": [
+    {
+      "question": "Is WELL-0001 producing oil right now?",
+      "summary": "WELL-0001 is not producing oil right now (3.2 °C above ambient; T200 threshold 15.0 °C).",
+      "visual": "status_card",
+      "key_facts": {
+        "producing": false,
+        "delta_c": 3.2,
+        "inspection_id": "INS-0001-0203",
+        "inspector": "Ryan Brooks"
+      }
+    },
+    {
+      "question": "WELL-0001 spills last 4 years",
+      "summary": "WELL-0001 has 6 real spills totaling 15.1 bbl (7 detections including corrected).",
+      "visual": "table"
+    },
+    {
+      "question": "WELL-0001 downtime 2025",
+      "summary": "WELL-0001 was down 21 days in 2025 (3 weekly not-producing inspections × 7).",
+      "visual": "none"
+    }
+  ]
+}
