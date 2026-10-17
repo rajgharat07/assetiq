@@ -1,0 +1,42 @@
+# secrets & local env
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+*.log
+
+# node / UI
+ui/node_modules/
+ui/dist/
+node_modules/
+
+# private planning (never push)
+private/
+
+# local data stores
+data/
+*.db
+*.sqlite
+chroma/
+.chroma/
+
+# raw challenge dataset (large / license-restricted — point via env)
+sample-data/
+test-data/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# eval caches
+eval/out/
+out/
